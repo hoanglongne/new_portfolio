@@ -12,6 +12,10 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontFamily: {
+        orbitron: ['Orbitron', 'sans-serif'],
+        bigInline: ['Big Shoulders Inline Text', 'sans-serif'],
+      },
     },
   },
   plugins: [],
