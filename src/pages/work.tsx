@@ -335,6 +335,10 @@ export default function Work() {
                             />
                         </div>
                     ))}
+
+                    {/* Gradient overlays for depth - matching index.tsx and about.tsx */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#0a1c2a]/50 via-transparent to-[#071118]/70" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#0f2034]/50 via-transparent to-[#0a1626]/50" />
                 </div>
 
                 {/* Page content */}

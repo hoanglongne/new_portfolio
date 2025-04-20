@@ -1,0 +1,92 @@
+
+
+Full-stack developer with 3+ years of experience building web2 and web3 applications using Next.js, React, Python, and Tailwind CSS. Pro cient in containerization (Docker) and familiar with Kubernetes. Passionate about problem-solving and continuous learning, with a keen interest in exploring DevOps roles.
+Work email: ngytrhoanglong61@gmail.com Phone number: (+84) 926 326 765
+Ho Chi Minh City, Vietnam
+
+
+
+
+
+
+
+
+
+
+Dec 2022 - J un 2023
+
+Leveraged GraphQL, J est, WebRTC, Kubernetes across diverse projects: desktop apps, OKR management, plan and architect a cloud-based surveillance on GCP. Con gure the Machine Learning API of the camera system using Python.
+
+
+
+
+
+
+J an 2022 - J un 2023
+
+Craft captivating web experiences - landing pages to web3 (Near, Polkadot) - with React, Astro, Material UI, NodeJ s. Some projects using Python backend. 2-3 projects/month.
+
+
+
+
+
+
+Dec 2023 - J ul 2024
+
+One of their two rst developers, build the whole UI from scratch and working with blockchain (ethereum) integration, real-time data handling, web3 transactions handling, contract calls,...
+
+
+
+
+
+
+Mar 2024 - J an 2025
+
+Core engineer in a startup team, planning, design and implement most core feature of Gearindigo (an AI-bases business starter) like svg editor, chat function, streaming data, directory builder for reverse engineering, product deployment,...
+
+
+
+
+
+
+J ul 2024 - Feb 2025
+
+Middle engineer for an API integration solution that help mapping legacy systems to modern APIs and heavy enterprise solutions to external ecosystems and SaaS tools. Work with their conversion (mapping) function, which is one of the most important feature.
+
+
+ 
+
+1. Gear Indigo, a LLM-based idea to product (code) generator for SME business: https://gearindigo.app/
+
+2. Decentralized x-rated market-place for lending and borrowing token: https://app.spine. nance/
+
+3. Here my project for customer who is an english center based in Ho Chi Minh City. The project is a whole learning system which contain authentication, attendance, meetings schedule, class enroll, exam system and much more: https://elms-xi.vercel.app/
+May 2023 - now
+
+
+
+
+2019 - 2023	2021 - 2022
+
+
+
+
+
+
+
+
+& ReactJ S
+& NextJ S
+& Python
+& NodeJ S
+& MongoDB
+& AngularJ S
+& 
+English - Professional (IELTS 7.0)
+& J apanese - Fluent
+& Vietnamese - Native
+
+
+
+
+
