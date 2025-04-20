@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.blur-text {
+    @apply relative;
+}
+
+.blur-text span {
+    @apply relative;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    font-feature-settings: "salt" 1, "ss01" 1;
+}
+
+.blur-text span::after {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.15),
+            transparent);
+    transform: translateX(-100%);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Enhanced glow effect for Special Gothic font */
+.blur-text span:hover {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+    transition: text-shadow 0.3s ease;
+}

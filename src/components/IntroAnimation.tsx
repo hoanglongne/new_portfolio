@@ -10,6 +10,9 @@ const greetings = [
     { text: "Guten tag", lang: "de" },
 ];
 
+const GREETING_DURATION = 600; // Reduced from 1000ms to 600ms
+const TRANSITION_DURATION = 300; // Reduced from 600ms to 300ms
+
 interface Particle {
     id: number;
     radius: number;
@@ -23,13 +26,12 @@ const IntroAnimation = () => {
     const [show, setShow] = useState(true);
     const [particles, setParticles] = useState<Particle[]>([]);
 
-    // Initialize particles in a spiral pattern
     useEffect(() => {
         const screenSize = Math.max(window.innerWidth, window.innerHeight);
         const initialParticles = Array.from({ length: 550 }, (_, i) => {
-            const radius = 200 + (i / 350) * screenSize; // Larger radius based on screen size
-            const angle = (i / 350) * Math.PI * 20; // Multiple rotations
-            const speed = 0.2 + (Math.random() * 0.3); // Random speed variation
+            const radius = 200 + (i / 350) * screenSize;
+            const angle = (i / 350) * Math.PI * 20;
+            const speed = 0.2 + (Math.random() * 0.3);
 
             return {
                 id: i,
@@ -42,7 +44,6 @@ const IntroAnimation = () => {
         setParticles(initialParticles);
     }, []);
 
-    // Animate particles
     useEffect(() => {
         let animationFrameId: number;
 
@@ -67,15 +68,15 @@ const IntroAnimation = () => {
 
     useEffect(() => {
         if (currentIndex >= greetings.length) {
-            setTimeout(() => {
+            const exitTimer = setTimeout(() => {
                 setShow(false);
-            }, 300);
-            return;
+            }, TRANSITION_DURATION);
+            return () => clearTimeout(exitTimer);
         }
 
         const timer = setTimeout(() => {
             setCurrentIndex(prev => prev + 1);
-        }, 500);
+        }, GREETING_DURATION + TRANSITION_DURATION); // Wait for greeting + transition
 
         return () => clearTimeout(timer);
     }, [currentIndex]);
@@ -90,7 +91,7 @@ const IntroAnimation = () => {
                         opacity: 0,
                         transition: {
                             duration: 1,
-                            ease: "easeInOut",
+                            ease: [0.43, 0.13, 0.23, 0.96],
                         }
                     }}
                 >
@@ -139,11 +140,22 @@ const IntroAnimation = () => {
                                 <motion.div
                                     key={greetings[currentIndex].lang}
                                     className="absolute w-full text-center text-6xl whitespace-nowrap font-bold text-[#fefbfb]"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -20 }}
-                                    transition={{
-                                        duration: 0.4,
+                                    initial={{ opacity: 0, y: 40 }}
+                                    animate={{
+                                        opacity: 1,
+                                        y: 0,
+                                        transition: {
+                                            duration: TRANSITION_DURATION / 1000,
+                                            ease: [0.43, 0.13, 0.23, 0.96],
+                                        }
+                                    }}
+                                    exit={{
+                                        opacity: 0,
+                                        y: -40,
+                                        transition: {
+                                            duration: TRANSITION_DURATION / 1000,
+                                            ease: [0.43, 0.13, 0.23, 0.96],
+                                        }
                                     }}
                                 >
                                     {greetings[currentIndex].text}

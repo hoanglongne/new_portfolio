@@ -15,6 +15,7 @@ export default {
       fontFamily: {
         orbitron: ['Orbitron', 'sans-serif'],
         bigInline: ['Big Shoulders Inline Text', 'sans-serif'],
+        specialGothic: ['"Special Gothic Expanded One"', 'sans-serif'],
       },
     },
   },
