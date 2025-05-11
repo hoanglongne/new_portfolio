@@ -1,70 +1,44 @@
 import { useEffect, useState, useRef } from 'react';
 import Head from 'next/head';
 import Navigation from '@/components/Navigation';
-import { motion, useMotionValue, useTransform, useInView, AnimatePresence, useMotionTemplate } from 'framer-motion';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
 import Link from 'next/link';
+
+const GEAR_INDIGO_PATH = '/projects/gearindigo.png';
+const SPINE_PATH = '/projects/spine.png';
+const LMS_PATH = '/projects/lms.png';
 
 const projects = [
     {
         id: 1,
-        title: 'Portfolio Website',
-        description: 'A modern portfolio website built with Next.js, Framer Motion, and Three.js.',
-        technologies: ['Next.js', 'React', 'Framer Motion', 'Three.js', 'Tailwind CSS'],
-        image: '/projects/portfolio.jpg',
-        category: 'Web Development',
-        link: '#',
+        title: 'Gear Indigo',
+        description: 'An AI-based business starter that helps SMEs generate product ideas and code. Features include SVG editor, chat functionality, streaming data processing, and product deployment.',
+        technologies: ['React', 'Next.js', 'TypeScript', 'Node.js', 'AI/ML', 'Tailwind CSS'],
+        image: GEAR_INDIGO_PATH,
+        category: 'AI/Machine Learning',
+        link: 'https://gearindigo.app/',
         featured: true
     },
     {
         id: 2,
-        title: 'E-Commerce Platform',
-        description: 'A fully functional e-commerce platform with payment processing and inventory management.',
-        technologies: ['React', 'Node.js', 'MongoDB', 'Stripe', 'Redux'],
-        image: '/projects/ecommerce.jpg',
-        category: 'Full Stack',
-        link: '#',
+        title: 'Spine Finance',
+        description: 'A decentralized marketplace for lending and borrowing tokens with blockchain integration, real-time data handling, and web3 transaction processing.',
+        technologies: ['React', 'Web3.js', 'Ethereum', 'Solidity', 'TypeScript', 'Tailwind CSS'],
+        image: SPINE_PATH,
+        category: 'Blockchain',
+        link: 'https://app.spine.finance/',
         featured: true
     },
     {
         id: 3,
-        title: 'AI Content Generator',
-        description: 'An AI-powered content generation tool that creates unique text based on user prompts.',
-        technologies: ['Python', 'TensorFlow', 'Flask', 'React', 'AWS'],
-        image: '/projects/ai-generator.jpg',
-        category: 'AI/Machine Learning',
-        link: '#',
-        featured: false
-    },
-    {
-        id: 4,
-        title: 'Mobile Fitness App',
-        description: 'A fitness tracking application for iOS and Android with workout plans and progress tracking.',
-        technologies: ['React Native', 'Firebase', 'Redux', 'GraphQL'],
-        image: '/projects/fitness-app.jpg',
-        category: 'Mobile Development',
-        link: '#',
-        featured: false
-    },
-    {
-        id: 5,
-        title: 'Dashboard Analytics',
-        description: 'A comprehensive analytics dashboard for monitoring business metrics and performance.',
-        technologies: ['Vue.js', 'D3.js', 'Node.js', 'PostgreSQL'],
-        image: '/projects/dashboard.jpg',
-        category: 'Data Visualization',
-        link: '#',
+        title: 'ELMS Learning System',
+        description: 'A comprehensive learning management system with features for authentication, attendance tracking, meeting scheduling, class enrollment, and exam management.',
+        technologies: ['React', 'Next.js', 'MongoDB', 'Node.js', 'Express', 'Tailwind CSS'],
+        image: LMS_PATH,
+        category: 'Full Stack',
+        link: 'https://elms-xi.vercel.app/',
         featured: true
     },
-    {
-        id: 6,
-        title: 'Blockchain Explorer',
-        description: 'A blockchain explorer for tracking transactions, blocks, and smart contracts.',
-        technologies: ['React', 'Web3.js', 'Node.js', 'Solidity'],
-        image: '/projects/blockchain.jpg',
-        category: 'Blockchain',
-        link: '#',
-        featured: false
-    }
 ];
 
 const categories = ['All', ...new Set(projects.map(project => project.category))];
@@ -482,38 +456,49 @@ export default function Work() {
                                 >
                                     {/* Project image or placeholder */}
                                     <div className="absolute inset-0 bg-gradient-to-tr from-[#131925] to-[#1f2c3d]">
-                                        {/* Enhanced placeholder with styled letter */}
-                                        <div className="absolute inset-0 flex items-center justify-center">
-                                            <motion.span
-                                                className="text-8xl font-bold text-white/5"
-                                                animate={{
-                                                    scale: [1, 1.1, 1],
-                                                    opacity: [0.05, 0.08, 0.05],
-                                                    rotate: [0, 5, 0]
-                                                }}
-                                                transition={{
-                                                    duration: 8,
-                                                    repeat: Infinity,
-                                                    ease: "easeInOut",
-                                                    delay: index * 0.3
-                                                }}
-                                            >
-                                                {project.title.charAt(0)}
-                                            </motion.span>
+                                        {project.image ? (
+                                            <div className="absolute inset-0">
+                                                <img
+                                                    src={project.image}
+                                                    alt={project.title}
+                                                    className="w-full h-full object-cover opacity-90"
+                                                    loading={project.id === 1 ? "eager" : "lazy"}
+                                                />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+                                            </div>
+                                        ) : (
                                             <div className="absolute inset-0 flex items-center justify-center">
-                                                <motion.div
-                                                    className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center backdrop-blur-sm border border-white/10"
-                                                    whileHover={{
-                                                        scale: 1.2,
-                                                        backgroundColor: "rgba(255, 255, 255, 0.1)"
+                                                <motion.span
+                                                    className="text-8xl font-bold text-white/5"
+                                                    animate={{
+                                                        scale: [1, 1.1, 1],
+                                                        opacity: [0.05, 0.08, 0.05],
+                                                        rotate: [0, 5, 0]
+                                                    }}
+                                                    transition={{
+                                                        duration: 8,
+                                                        repeat: Infinity,
+                                                        ease: "easeInOut",
+                                                        delay: index * 0.3
                                                     }}
                                                 >
-                                                    <span className="text-2xl font-bold text-white/70">
-                                                        {project.title.charAt(0)}
-                                                    </span>
-                                                </motion.div>
+                                                    {project.title.charAt(0)}
+                                                </motion.span>
+                                                <div className="absolute inset-0 flex items-center justify-center">
+                                                    <motion.div
+                                                        className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center backdrop-blur-sm border border-white/10"
+                                                        whileHover={{
+                                                            scale: 1.2,
+                                                            backgroundColor: "rgba(255, 255, 255, 0.1)"
+                                                        }}
+                                                    >
+                                                        <span className="text-2xl font-bold text-white/70">
+                                                            {project.title.charAt(0)}
+                                                        </span>
+                                                    </motion.div>
+                                                </div>
                                             </div>
-                                        </div>
+                                        )}
                                     </div>
 
                                     {/* Project info overlay */}
