@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import Navigation from '@/components/Navigation';
 import Head from 'next/head';
+import Link from 'next/link';
 
 interface Particle {
     id: number;
@@ -167,10 +168,10 @@ export default function About() {
                         <section className="mb-16">
                             <h1 className="text-4xl md:text-5xl font-bold mb-6">About Me</h1>
                             <p className="text-lg text-white/80 leading-relaxed">
-                                Full-stack developer with 3+ years of experience building web2 and web3 applications.
-                                Specializing in Next.js, React, Python, and Tailwind CSS, with proficiency in containerization (Docker)
-                                and Kubernetes. Passionate about problem-solving and continuous learning, with a keen interest in
-                                exploring DevOps roles.
+                                Senior Fullstack Developer and Founding Engineer with nearly 4 years of expertise in "Zero-to-One" product
+                                development. Specialist in architecting high-stakes Web3 platforms, scaling enterprise API ecosystems,
+                                and delivering national-scale automation solutions. Proficient in Next.js, React, Node.js, Python, Web3
+                                technologies, Docker, Kubernetes, and GCP.
                             </p>
                         </section>
 
@@ -183,38 +184,31 @@ export default function About() {
 
                             <div className="space-y-12">
                                 <ExperienceCard
-                                    date="Mar 2024 - Present"
-                                    title="Core Engineer"
-                                    company="Gear Indigo"
-                                    description="Core engineer in a startup team, planning, design and implement core features of Gear Indigo (an AI-based business starter) including svg editor, chat function, streaming data, directory builder for reverse engineering, and product deployment."
+                                    date="Nov 2024 - Mar 2026"
+                                    title="Founding Fullstack Engineer"
+                                    company="Spine Finance"
+                                    description="Spearheaded the architectural design and end-to-end development of a DeFi marketplace from scratch. Engineered the Web3 transaction engine and real-time monitoring, resulting in 35% faster page interactions and high data reliability. Collaborated with founders to define the technical roadmap and ensure 99.9% uptime for core financial modules."
                                 />
 
                                 <ExperienceCard
-                                    date="Jul 2024 - Feb 2025"
-                                    title="Middle Engineer"
-                                    company="API Integration Solutions"
-                                    description="Developed API integration solutions for mapping legacy systems to modern APIs and enterprise solutions. Specialized in conversion mapping functionality for external ecosystems and SaaS tools integration."
+                                    date="Nov 2023 - Oct 2024"
+                                    title="Fullstack Developer"
+                                    company="Specific Group"
+                                    description="Architected high-integrity API mapping solutions for legacy-to-SaaS migrations within heavy enterprise ecosystems. Refactored database schemas and processing algorithms, reducing API latency by 40% for high-concurrency traffic."
                                 />
 
                                 <ExperienceCard
-                                    date="Dec 2023 - Jul 2024"
-                                    title="Founding Developer"
-                                    company="Web3 Project"
-                                    description="One of two founding developers, built complete UI from scratch with blockchain (Ethereum) integration, handling real-time data, web3 transactions, and smart contract interactions."
+                                    date="Jan 2023 - Oct 2023"
+                                    title="Fullstack Developer"
+                                    company="Stellaps - Docgen"
+                                    description="Developed core features for an AI-based business generator, including a custom SVG editor and real-time streaming data modules for rapid prototyping. Worked as part of a startup team building innovative AI tools for SMEs."
                                 />
 
                                 <ExperienceCard
-                                    date="Dec 2022 - Jun 2023"
-                                    title="Full Stack Developer"
-                                    company="Tech Solutions"
-                                    description="Leveraged GraphQL, Jest, WebRTC, and Kubernetes across diverse projects: desktop applications, OKR management systems, and architected a cloud-based surveillance solution on GCP. Configured Machine Learning API for camera systems using Python."
-                                />
-
-                                <ExperienceCard
-                                    date="Jan 2022 - Jun 2023"
-                                    title="Frontend Developer"
-                                    company="Web Agency"
-                                    description="Crafted captivating web experiences from landing pages to web3 applications (Near, Polkadot) using React, Astro, Material UI, and Node.js. Developed backend solutions with Python. Delivered 2-3 projects monthly."
+                                    date="Feb 2022 - Dec 2022"
+                                    title="Fullstack & AI Engineer"
+                                    company="ITD Group"
+                                    description="Promoted to Full-time within 4 months for exceptional delivery on a GCP/Kubernetes-based cloud surveillance project. Leveraged GraphQL, Jest, WebRTC, and Kubernetes across diverse projects including desktop applications and OKR management systems."
                                 />
                             </div>
                         </section>
@@ -226,23 +220,31 @@ export default function About() {
                                 <div className="h-px bg-white/20 flex-grow"></div>
                             </h2>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <ProjectCard
-                                    title="Gear Indigo"
-                                    description="LLM-based idea to product generator for SME business"
-                                    link="https://gearindigo.app/"
-                                />
-                                <ProjectCard
-                                    title="Spine Finance"
-                                    description="Decentralized x-rated marketplace for lending and borrowing tokens"
-                                    link="https://app.spine.finance/"
-                                />
-                                <ProjectCard
-                                    title="ELMS Learning System"
-                                    description="Comprehensive learning management system with authentication, attendance, scheduling, and exam features"
-                                    link="https://elms-xi.vercel.app/"
-                                />
-                            </div>
+                            <motion.div
+                                className="text-center p-8 rounded-xl bg-white/5 border border-white/10"
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <p className="text-lg text-white/80 mb-6">
+                                    I've worked on various projects spanning DeFi, e-learning, maritime automation, and enterprise API solutions.
+                                </p>
+                                <motion.div
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    <Link
+                                        href="/work"
+                                        className="inline-flex items-center px-6 py-3 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 transition-colors"
+                                    >
+                                        <span className="mr-2">View All Projects</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                            <polyline points="12 5 19 12 12 19"></polyline>
+                                        </svg>
+                                    </Link>
+                                </motion.div>
+                            </motion.div>
                         </section>
 
                         {/* Skills & Languages */}
@@ -253,7 +255,11 @@ export default function About() {
                                     <div className="h-px bg-white/20 flex-grow"></div>
                                 </h2>
                                 <div className="flex flex-wrap gap-3">
-                                    {['React.js', 'Next.js', 'Python', 'Node.js', 'MongoDB', 'Angular.js', 'Docker', 'Kubernetes'].map((skill) => (
+                                    {[
+                                        'Next.js', 'React', 'Node.js', 'Python', 'Django', 'FastAPI',
+                                        'Ethereum', 'Ethers.js', 'Web3', 'WebRTC', 'Docker', 'Kubernetes',
+                                        'GCP', 'CI/CD', 'Microservices', 'Real-time Systems', 'AI Integration'
+                                    ].map((skill) => (
                                         <span
                                             key={skill}
                                             className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm"
@@ -272,11 +278,11 @@ export default function About() {
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-between">
                                         <span>English</span>
-                                        <span className="text-white/60">Professional (IELTS 7.0)</span>
+                                        <span className="text-white/60">TOEIC 945/990</span>
                                     </div>
                                     <div className="flex items-center justify-between">
                                         <span>Japanese</span>
-                                        <span className="text-white/60">Fluent</span>
+                                        <span className="text-white/60">N3/N4 Level</span>
                                     </div>
                                     <div className="flex items-center justify-between">
                                         <span>Vietnamese</span>
@@ -300,18 +306,8 @@ export default function About() {
                                     className="relative pl-8 before:content-[''] before:absolute before:left-0 before:top-0 before:w-px before:h-full before:bg-white/10"
                                 >
                                     <span className="text-sm text-white/60">2019 - 2023</span>
-                                    <h3 className="text-xl font-bold mt-2">Bachelor's Degree</h3>
-                                    <h4 className="text-white/80 mb-2">Computer Science</h4>
-                                </motion.div>
-                                <motion.div
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.5 }}
-                                    className="relative pl-8 before:content-[''] before:absolute before:left-0 before:top-0 before:w-px before:h-full before:bg-white/10"
-                                >
-                                    <span className="text-sm text-white/60">2021 - 2022</span>
-                                    <h3 className="text-xl font-bold mt-2">Specialized Training</h3>
-                                    <h4 className="text-white/80 mb-2">Web Development</h4>
+                                    <h3 className="text-xl font-bold mt-2">Bachelor of Software Engineering</h3>
+                                    <h4 className="text-white/80 mb-2">Ton Duc Thang University</h4>
                                 </motion.div>
                             </div>
                         </section>

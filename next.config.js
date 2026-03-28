@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     transpilePackages: ['three'],
+    images: {
+        domains: ['cdn.sanity.io'],
+    },
     webpack: (config) => {
         // Ensure config.externals exists and is properly handled
         if (!config.externals) {

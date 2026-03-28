@@ -1,47 +1,17 @@
+import { GetStaticProps } from 'next';
 import { useEffect, useState, useRef } from 'react';
 import Head from 'next/head';
 import Navigation from '@/components/Navigation';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import Link from 'next/link';
+import { ProjectDetail } from '@/sanity/types';
+import { getAllProjects, getAllCategories } from '@/sanity/queries';
+import { fallbackProjects, fallbackCategories } from '@/data/fallbackProjects';
 
-const GEAR_INDIGO_PATH = '/projects/gearindigo.png';
-const SPINE_PATH = '/projects/spine.png';
-const LMS_PATH = '/projects/lms.png';
-
-const projects = [
-    {
-        id: 1,
-        title: 'Gear Indigo',
-        description: 'An AI-based business starter that helps SMEs generate product ideas and code. Features include SVG editor, chat functionality, streaming data processing, and product deployment.',
-        technologies: ['React', 'Next.js', 'TypeScript', 'Node.js', 'AI/ML', 'Tailwind CSS'],
-        image: GEAR_INDIGO_PATH,
-        category: 'AI/Machine Learning',
-        link: 'https://gearindigo.app/',
-        featured: true
-    },
-    {
-        id: 2,
-        title: 'Spine Finance',
-        description: 'A decentralized marketplace for lending and borrowing tokens with blockchain integration, real-time data handling, and web3 transaction processing.',
-        technologies: ['React', 'Web3.js', 'Ethereum', 'Solidity', 'TypeScript', 'Tailwind CSS'],
-        image: SPINE_PATH,
-        category: 'Blockchain',
-        link: 'https://app.spine.finance/',
-        featured: true
-    },
-    {
-        id: 3,
-        title: 'ELMS Learning System',
-        description: 'A comprehensive learning management system with features for authentication, attendance tracking, meeting scheduling, class enrollment, and exam management.',
-        technologies: ['React', 'Next.js', 'MongoDB', 'Node.js', 'Express', 'Tailwind CSS'],
-        image: LMS_PATH,
-        category: 'Full Stack',
-        link: 'https://elms-xi.vercel.app/',
-        featured: true
-    },
-];
-
-const categories = ['All', ...new Set(projects.map(project => project.category))];
+interface WorkPageProps {
+    projects: ProjectDetail[];
+    categories: string[];
+}
 
 const GlitchText = ({ text }: { text: string }) => {
     return (
@@ -202,11 +172,13 @@ const GlitchText = ({ text }: { text: string }) => {
     );
 };
 
-export default function Work() {
+export default function Work({ projects, categories: initialCategories }: WorkPageProps) {
     const [mounted, setMounted] = useState(false);
     const [activeCategory, setActiveCategory] = useState('All');
     const [filteredProjects, setFilteredProjects] = useState(projects);
-    const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+    const [hoveredProject, setHoveredProject] = useState<string | null>(null);
+
+    const categories = ['All', ...initialCategories];
 
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
@@ -456,13 +428,13 @@ export default function Work() {
                                 >
                                     {/* Project image or placeholder */}
                                     <div className="absolute inset-0 bg-gradient-to-tr from-[#131925] to-[#1f2c3d]">
-                                        {project.image ? (
+                                        {project.thumbnail ? (
                                             <div className="absolute inset-0">
                                                 <img
-                                                    src={project.image}
+                                                    src={project.thumbnail}
                                                     alt={project.title}
                                                     className="w-full h-full object-cover opacity-90"
-                                                    loading={project.id === 1 ? "eager" : "lazy"}
+                                                    loading={index === 0 ? "eager" : "lazy"}
                                                 />
                                                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
                                             </div>
@@ -556,7 +528,7 @@ export default function Work() {
                                                     duration: 0.5
                                                 }}
                                             >
-                                                {project.description}
+                                                {project.shortDescription}
                                             </motion.p>
 
                                             <motion.div
@@ -568,7 +540,7 @@ export default function Work() {
                                                     duration: 0.5
                                                 }}
                                             >
-                                                {project.technologies.slice(0, 3).map((tech, i) => (
+                                                {project.technologies.slice(0, 3).map((tech: string, i: number) => (
                                                     <motion.span
                                                         key={i}
                                                         className="inline-block px-2 py-1 text-[10px] rounded bg-white/5 border border-white/10"
@@ -631,7 +603,7 @@ export default function Work() {
                                         }
                                     }}
                                 >
-                                    <Link href={project.link}>
+                                    <Link href={`/work/${project.slug}`}>
                                         <motion.span
                                             className="px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-xs font-medium tracking-wider border border-white/20 inline-block"
                                             whileHover={{
@@ -640,7 +612,7 @@ export default function Work() {
                                             }}
                                             transition={{ duration: 0.2 }}
                                         >
-                                            VIEW PROJECT
+                                            VIEW DETAILS
                                         </motion.span>
                                     </Link>
                                 </motion.div>
@@ -767,4 +739,33 @@ export default function Work() {
             </motion.main>
         </>
     );
-} 
+}
+
+export const getStaticProps: GetStaticProps<WorkPageProps> = async () => {
+    try {
+        const projects = await getAllProjects();
+        const categories = await getAllCategories();
+
+        // Use fallback data if Sanity returns empty results
+        const finalProjects = projects.length > 0 ? projects : fallbackProjects;
+        const finalCategories = categories.length > 0 ? categories : fallbackCategories;
+
+        return {
+            props: {
+                projects: finalProjects,
+                categories: finalCategories,
+            },
+            revalidate: 60, // Revalidate every 60 seconds
+        };
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+        // Use fallback data on error
+        return {
+            props: {
+                projects: fallbackProjects,
+                categories: fallbackCategories,
+            },
+            revalidate: 60,
+        };
+    }
+}; 
