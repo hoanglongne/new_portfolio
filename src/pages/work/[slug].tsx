@@ -5,9 +5,8 @@ import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Navigation from '@/components/Navigation';
 import ProjectGallery from '@/components/ProjectGallery';
-import { ProjectDetail } from '@/sanity/types';
-import { getProjectBySlug, getAllProjectSlugs } from '@/sanity/queries';
-import { fallbackProjects } from '@/data/fallbackProjects';
+import { ProjectDetail } from '@/types/project';
+import { getProjectBySlug, getAllProjectSlugs } from '@/lib/projects-data';
 
 interface ProjectDetailPageProps {
     project: ProjectDetail;
@@ -431,78 +430,30 @@ export default function ProjectDetailPage({ project }: ProjectDetailPageProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    try {
-        const slugs = await getAllProjectSlugs();
+    const slugs = getAllProjectSlugs();
 
-        // Use fallback projects if Sanity returns empty
-        const finalSlugs = slugs.length > 0 ? slugs : fallbackProjects.map(p => p.slug);
+    const paths = slugs.map((slug: string) => ({
+        params: { slug }
+    }));
 
-        const paths = finalSlugs.map((slug: string) => ({
-            params: { slug }
-        }));
-
-        return {
-            paths,
-            fallback: 'blocking'
-        };
-    } catch (error) {
-        console.error('Error fetching project slugs:', error);
-        // Use fallback slugs on error
-        const paths = fallbackProjects.map(p => ({
-            params: { slug: p.slug }
-        }));
-
-        return {
-            paths,
-            fallback: 'blocking'
-        };
-    }
+    return {
+        paths,
+        fallback: false
+    };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-    try {
-        const project = await getProjectBySlug(params?.slug as string);
+    const project = getProjectBySlug(params?.slug as string);
 
-        // If Sanity doesn't have the project, try fallback
-        if (!project) {
-            const fallbackProject = fallbackProjects.find(p => p.slug === params?.slug);
-
-            if (!fallbackProject) {
-                return {
-                    notFound: true
-                };
-            }
-
-            return {
-                props: {
-                    project: fallbackProject
-                },
-                revalidate: 60
-            };
-        }
-
+    if (!project) {
         return {
-            props: {
-                project
-            },
-            revalidate: 60
-        };
-    } catch (error) {
-        console.error('Error fetching project:', error);
-        // Try fallback on error
-        const fallbackProject = fallbackProjects.find(p => p.slug === params?.slug);
-
-        if (!fallbackProject) {
-            return {
-                notFound: true
-            };
-        }
-
-        return {
-            props: {
-                project: fallbackProject
-            },
-            revalidate: 60
+            notFound: true
         };
     }
+
+    return {
+        props: {
+            project
+        }
+    };
 };

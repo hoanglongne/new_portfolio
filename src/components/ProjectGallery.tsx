@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ProjectGallery as ProjectGalleryType, ProjectImage } from '@/data/projects';
+import { ProjectGallerySection, ProjectImage } from '@/types/project';
 
 interface ProjectGalleryProps {
-    gallery: ProjectGalleryType;
+    gallery: ProjectGallerySection[];
 }
 
 export default function ProjectGallery({ gallery }: ProjectGalleryProps) {
-    const [activeSection, setActiveSection] = useState<string>(Object.keys(gallery)[0]);
+    const [activeSection, setActiveSection] = useState<string>(gallery[0]?.sectionKey || '');
     const [lightboxImage, setLightboxImage] = useState<ProjectImage | null>(null);
     const [lightboxIndex, setLightboxIndex] = useState<number>(0);
 
-    const sectionKeys = Object.keys(gallery);
-    const currentSectionImages = gallery[activeSection]?.images || [];
+    const currentSection = gallery.find(s => s.sectionKey === activeSection);
+    const currentSectionImages = currentSection?.images || [];
 
     const openLightbox = (image: ProjectImage, index: number) => {
         setLightboxImage(image);
@@ -48,14 +48,13 @@ export default function ProjectGallery({ gallery }: ProjectGalleryProps) {
         <div className="space-y-8" onKeyDown={handleKeyDown} tabIndex={0}>
             {/* Section Navigation (Sitemap) */}
             <div className="flex flex-wrap gap-3 pb-6 border-b border-white/10">
-                {sectionKeys.map((sectionKey) => {
-                    const section = gallery[sectionKey];
-                    const isActive = activeSection === sectionKey;
+                {gallery.map((section) => {
+                    const isActive = activeSection === section.sectionKey;
 
                     return (
                         <motion.button
-                            key={sectionKey}
-                            onClick={() => setActiveSection(sectionKey)}
+                            key={section.sectionKey}
+                            onClick={() => setActiveSection(section.sectionKey)}
                             className={`relative px-5 py-2.5 rounded-lg text-sm font-medium tracking-wide transition-all ${isActive
                                     ? 'text-white'
                                     : 'text-[#9da9b4] hover:text-white'
@@ -109,10 +108,10 @@ export default function ProjectGallery({ gallery }: ProjectGalleryProps) {
                     className="mb-6"
                 >
                     <h3 className="text-2xl font-semibold mb-2">
-                        {gallery[activeSection]?.title}
+                        {currentSection?.title}
                     </h3>
                     <p className="text-[#9da9b4]">
-                        {gallery[activeSection]?.description}
+                        {currentSection?.description}
                     </p>
                 </motion.div>
             </AnimatePresence>
@@ -139,7 +138,7 @@ export default function ProjectGallery({ gallery }: ProjectGalleryProps) {
                         >
                             {/* Image */}
                             <img
-                                src={image.url}
+                                src={image.image}
                                 alt={image.alt}
                                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                                 loading="lazy"
@@ -238,7 +237,7 @@ export default function ProjectGallery({ gallery }: ProjectGalleryProps) {
                             onClick={(e) => e.stopPropagation()}
                         >
                             <img
-                                src={lightboxImage.url}
+                                src={lightboxImage.image}
                                 alt={lightboxImage.alt}
                                 className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl"
                             />

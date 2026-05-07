@@ -343,7 +343,8 @@ export default function Home() {
                           transition={{
                             duration: 1,
                             repeat: Infinity,
-                            ease: "steps(1)"
+                            ease: "linear",
+                            times: [0, 0.5, 1]
                           }}
                         />
                       </div>

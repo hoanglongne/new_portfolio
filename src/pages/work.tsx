@@ -4,9 +4,8 @@ import Head from 'next/head';
 import Navigation from '@/components/Navigation';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import Link from 'next/link';
-import { ProjectDetail } from '@/sanity/types';
-import { getAllProjects, getAllCategories } from '@/sanity/queries';
-import { fallbackProjects, fallbackCategories } from '@/data/fallbackProjects';
+import { ProjectDetail } from '@/types/project';
+import { getAllProjects, getAllCategories } from '@/lib/projects-data';
 
 interface WorkPageProps {
     projects: ProjectDetail[];
@@ -742,30 +741,13 @@ export default function Work({ projects, categories: initialCategories }: WorkPa
 }
 
 export const getStaticProps: GetStaticProps<WorkPageProps> = async () => {
-    try {
-        const projects = await getAllProjects();
-        const categories = await getAllCategories();
+    const projects = getAllProjects();
+    const categories = getAllCategories();
 
-        // Use fallback data if Sanity returns empty results
-        const finalProjects = projects.length > 0 ? projects : fallbackProjects;
-        const finalCategories = categories.length > 0 ? categories : fallbackCategories;
-
-        return {
-            props: {
-                projects: finalProjects,
-                categories: finalCategories,
-            },
-            revalidate: 60, // Revalidate every 60 seconds
-        };
-    } catch (error) {
-        console.error('Error fetching projects:', error);
-        // Use fallback data on error
-        return {
-            props: {
-                projects: fallbackProjects,
-                categories: fallbackCategories,
-            },
-            revalidate: 60,
-        };
-    }
+    return {
+        props: {
+            projects,
+            categories,
+        },
+    };
 }; 

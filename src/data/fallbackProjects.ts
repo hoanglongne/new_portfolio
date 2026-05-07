@@ -1,4 +1,4 @@
-import { ProjectDetail } from '@/sanity/types';
+import { ProjectDetail } from '@/types/project';
 
 // Fallback data when Sanity has no projects yet - Updated to match CV and current work
 export const fallbackProjects: ProjectDetail[] = [
@@ -32,8 +32,9 @@ On-chain data flows through wagmi/viem with multicall batching and a subgraph in
             { title: 'Independent Section Loading', content: 'React 19 Suspense architecture where each page section loads independently. Slow oracle queries don\'t block charts; delayed subgraph responses don\'t prevent metrics rendering. Perceived load time equals fastest data source' },
             { title: 'Wallet-Based Authentication', content: 'Web3 authentication via RainbowKit integrated with AWS Cognito custom auth. Users sign wallet challenge to authenticate, eliminating email/password friction while maintaining secure AWS Amplify session management' }
         ],
-        gallery: {},
-        outcome: 'Production-ready DeFi dashboard deployed across 5 EVM chains. Codebase: 408 files, 61,000 lines of TypeScript/React. 50+ reusable UI components with Storybook documentation. Architecture enables parallel loading from multiple on-chain sources without UI blocking.'
+        gallery: [],
+        outcome: 'Production-ready DeFi dashboard deployed across 5 EVM chains. Codebase: 408 files, 61,000 lines of TypeScript/React. 50+ reusable UI components with Storybook documentation. Architecture enables parallel loading from multiple on-chain sources without UI blocking.',
+        order: 1
     },
     {
         id: 'elms-learning',
@@ -63,8 +64,9 @@ Built with a focus on user experience and reliability, the system provides role-
             { title: 'Real-time Attendance', content: 'Live attendance tracking with QR code scanning and geolocation verification' },
             { title: 'Analytics Dashboard', content: 'Comprehensive analytics for student progress, course performance, and revenue tracking' }
         ],
-        gallery: {},
-        outcome: 'Successfully deployed and serving 500+ active users with high satisfaction rates. Handles thousands of video views daily with minimal server costs.'
+        gallery: [],
+        outcome: 'Successfully deployed and serving 500+ active users with high satisfaction rates. Handles thousands of video views daily with minimal server costs.',
+        order: 2
     },
     {
         id: 'singapore-maritime',
@@ -92,8 +94,9 @@ The system integrates with various industrial IoT sensors and controllers, proce
             { title: 'Control Interface', content: 'Secure operator interface for remote machinery control with audit logging' },
             { title: 'Data Visualization', content: 'Interactive dashboards with historical data, trends, and predictive analytics' }
         ],
-        gallery: {},
-        outcome: 'Deployed to production controlling critical port infrastructure. Achieved 30% increase in monitoring efficiency and significantly reduced response time to operational issues.'
+        gallery: [],
+        outcome: 'Deployed to production controlling critical port infrastructure. Achieved 30% increase in monitoring efficiency and significantly reduced response time to operational issues.',
+        order: 3
     },
     {
         id: 'b2b2c-travel-api',
@@ -122,8 +125,9 @@ The platform serves as a critical middleware layer, enabling seamless data flow 
             { title: 'Data Integrity', content: 'Comprehensive validation and error handling ensuring data consistency across provider systems' },
             { title: 'Monitoring & Analytics', content: 'Real-time performance monitoring with detailed analytics on API usage and bottlenecks' }
         ],
-        gallery: {},
-        outcome: 'Successfully deployed handling millions of API requests monthly with 40% improvement in response times. Enabled cross-border market expansion for multiple OTA clients.'
+        gallery: [],
+        outcome: 'Successfully deployed handling millions of API requests monthly with 40% improvement in response times. Enabled cross-border market expansion for multiple OTA clients.',
+        order: 4
     },
     {
         id: 'oratio',
@@ -153,8 +157,9 @@ The application implements a complete flow: Authentication → Matchmaking → P
             { title: 'Rating & Feedback System', content: 'Post-call partner ratings (1-9 scale matching IELTS), feedback tags, detailed comments, and would-match-again flags. Scores breakdown across 4 criteria: Fluency, Vocabulary, Grammar, Pronunciation with Row Level Security' },
             { title: 'Comprehensive Database Security', content: 'All 4 database tables (profiles, match_queue, matches, session_feedback) protected with Row Level Security policies. Users can only view their own matches, edit their own profiles, and access relevant feedback' }
         ],
-        gallery: {},
-        outcome: 'MVP functional with complete core flow (Auth → Match → Call → Feedback) working end-to-end. Database secured with 100% RLS policy coverage across all tables. Matchmaking averages ~30 seconds to find partners with ~99% match detection reliability through dual subscription + polling approach.'
+        gallery: [],
+        outcome: 'MVP functional with complete core flow (Auth → Match → Call → Feedback) working end-to-end. Database secured with 100% RLS policy coverage across all tables. Matchmaking averages ~30 seconds to find partners with ~99% match detection reliability through dual subscription + polling approach.',
+        order: 5
     },
     {
         id: 'era-tourist',
@@ -184,8 +189,9 @@ The project has completed a production-ready MVP with ~50,000 lines of code, 162
             { title: 'Full Bilingual System (VN/EN)', content: 'Complete bilingual support across all layers: UI, tour content, categories, planning assets, navigation, notifications, pricing (VND + USD). Instant language switching without reload, URL auto-adds ?lang= for sharing in correct language. Centralized translations for ~200+ keys' },
             { title: 'Security & Role-based Access Control', content: 'Multi-layer security: Row Level Security (RLS) on all Supabase tables, Admin Route Guard (access only when VITE_ADMIN_ENABLED=true), Auth Route Guard, Protected Routes, 5-tier permissions (Super Admin / Admin / Agent / Partner / User) with discount % for Agent/Partner roles. Real-time notification polling every 30s' }
         ],
-        gallery: {},
-        outcome: 'Production-ready MVP: ~50,000 LOC, 162 source files, 21 service modules, 40+ DB migrations, 12+ admin modules, 100+ React components. Full bilingual support (VN/EN) with ~200+ translation keys. 5-tier role-based access. Deployed on Vercel with multi-domain SPA configuration. Comprehensive documentation (4 guides). Ready for production operations.'
+        gallery: [],
+        outcome: 'Production-ready MVP: ~50,000 LOC, 162 source files, 21 service modules, 40+ DB migrations, 12+ admin modules, 100+ React components. Full bilingual support (VN/EN) with ~200+ translation keys. 5-tier role-based access. Deployed on Vercel with multi-domain SPA configuration. Comprehensive documentation (4 guides). Ready for production operations.',
+        order: 6
     }
 ];
 

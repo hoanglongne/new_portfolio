@@ -55,6 +55,26 @@ const client = sanityClient.createClient({
 // ─── Image Upload Helpers ───────────────────────────────────────────────────
 const PROJECTS_DIR = path.join(__dirname, '..', 'public', 'projects');
 
+// Retry helper for transient network errors
+async function retryWithBackoff(fn, maxRetries = 3, initialDelay = 1000) {
+    for (let i = 0; i < maxRetries; i++) {
+        try {
+            return await fn();
+        } catch (error) {
+            const isLastAttempt = i === maxRetries - 1;
+            const isRetryable = error.statusCode === 502 || error.statusCode === 503 || error.statusCode === 429;
+
+            if (isLastAttempt || !isRetryable) {
+                throw error;
+            }
+
+            const delay = initialDelay * Math.pow(2, i);
+            console.log(`   ⚠️  Error (${error.statusCode}), retrying in ${delay}ms... (attempt ${i + 1}/${maxRetries})`);
+            await new Promise(resolve => setTimeout(resolve, delay));
+        }
+    }
+}
+
 async function uploadImage(relativePath) {
     const fullPath = path.join(PROJECTS_DIR, relativePath);
     if (!fs.existsSync(fullPath)) {
@@ -64,7 +84,11 @@ async function uploadImage(relativePath) {
     const imageBuffer = fs.readFileSync(fullPath);
     const filename = path.basename(relativePath);
     console.log(`   📸 Uploading: ${relativePath}...`);
-    const asset = await client.assets.upload('image', imageBuffer, { filename });
+
+    const asset = await retryWithBackoff(async () => {
+        return await client.assets.upload('image', imageBuffer, { filename });
+    });
+
     return {
         _type: 'image',
         asset: {
@@ -210,7 +234,7 @@ On-chain data flows through wagmi/viem with multicall batching and a subgraph in
         role: 'Lead Frontend Engineer',
         duration: 'Nov 2024 - Mar 2026',
         team: 'Startup founding team',
-        liveUrl: 'https://app.spine.finance/',
+        liveUrl: 'https://testnet.spine.finance/Rise/earn',
         challenge: 'Building a responsive DeFi dashboard that loads data from multiple on-chain sources (smart contracts, subgraph indexers, Chainlink oracles) across multiple chains — without blocking the entire UI when any single data source is slow or unavailable. Each page needs 5–10 independent async data streams.',
         solution: 'Implemented a Promise-based suspension architecture leveraging React 19\'s use() hook. Page-level contexts create non-blocking promises, and each component independently suspends on its own data with co-located skeleton states. Combined with dual-strategy vault discovery (subgraph-first with on-chain event log fallback) and TanStack Query persistence for data resilience.',
         features: [
@@ -366,7 +390,7 @@ The system integrates with various industrial IoT sensors and controllers, proce
         shortDescription: 'High-concurrency API integration hub for international OTAs with complex data mapping for cross-border market expansion.',
         fullDescription: `Enterprise-scale API integration platform designed to bridge legacy travel systems with modern SaaS ecosystems and international OTA (Online Travel Agency) providers. The system handles high-concurrency traffic while maintaining data integrity across diverse provider formats.
 
-As a core fullstack developer at Specific Group, I architected high-integrity API mapping solutions for legacy-to-SaaS migrations within heavy enterprise ecosystems. This involved refactoring complex database schemas and processing algorithms to handle the demands of international travel booking platforms.
+    As a core fullstack developer, I architected high-integrity API mapping solutions for legacy-to-SaaS migrations within heavy enterprise ecosystems. This involved refactoring complex database schemas and processing algorithms to handle the demands of international travel booking platforms.
 
 The platform serves as a critical middleware layer, enabling seamless data flow between disparate systems while handling rate limiting, caching, and data transformation at scale.`,
         category: 'Backend',
@@ -383,7 +407,7 @@ The platform serves as a critical middleware layer, enabling seamless data flow 
         ],
         featured: true,
         role: 'Fullstack Developer',
-        duration: 'Nov 2023 - Oct 2024',
+        duration: 'Jun 2025 - Present',
         team: 'Enterprise development team',
         challenge: 'Mapping complex legacy travel APIs to modern standards while maintaining 99.9% uptime and handling thousands of concurrent requests with sub-100ms latency.',
         solution: 'Built a microservices architecture with intelligent caching, implemented database query optimization, and created a flexible mapping engine that reduced API latency by 40%.',
@@ -441,7 +465,7 @@ The application implements a complete flow: Authentication → Matchmaking → P
             'SWR',
             'Realtime Subscriptions'
         ],
-        featured: true,
+        featured: false,
         role: 'Full-stack Developer',
         duration: 'Mar 2026 - Present',
         challenge: 'Building a reliable real-time matchmaking system where two users can find each other based on compatible band scores, while handling race conditions (duplicate matches from concurrent polls), stale callback references from React re-renders, and maintaining stable audio connections between users over the internet.',
@@ -503,9 +527,10 @@ The project has completed a production-ready MVP with ~50,000 lines of code, 162
             'React Markdown',
             'Vercel'
         ],
-        featured: true,
+        featured: false,
         role: 'Full-stack Developer',
         duration: 'To be updated',
+        liveUrl: 'https://inbound-website-one.vercel.app',
         challenge: 'Building a travel platform serving multiple market segments (domestic tourists, international visitors, Halal travelers, Indochine) without creating separate websites — a common problem that increases build & maintenance costs 3-5x, scatters data, and forces content teams to duplicate entry across multiple systems. Additionally, needed to enable customer tour customization instead of just fixed package selection.',
         solution: 'Designed Multi-Region SaaS architecture — 1 codebase deploys to N domains, each recognizing VITE_REGION to filter corresponding content. Centralized Admin Panel manages all regions, assigning tours/categories/navigation per region. Built Tour Planning Engine with 4-step workflow: input info → system suggestions → customize daily → review & book, integrated with smart pricing engine (dual-currency, seasonal, group pricing, agent discounts). Secured with RLS + route guards + 5-tier role-based access. Marginal cost of expanding to new markets reduced to nearly zero.',
         features: [
@@ -598,8 +623,136 @@ Built with Next.js for the frontend, the platform leverages LLM APIs for intelli
             }
         ],
         outcome: 'Production SaaS platform serving multiple Japanese enterprise clients. Adopted by system integrators (MAKE A CHANGE, Walkers, BizLink) and web marketing companies (GladCube) for requirement definition, cost estimation, and development documentation. Tiered pricing model (Free/$14.99/$29.99 per month).',
-        order: 3
-    }
+        order: 7
+    },
+    {
+        _type: 'project',
+        _id: 'cortex-hub',
+        title: 'CORTEX HUB',
+        slug: {
+            _type: 'slug',
+            current: 'cortex-hub'
+        },
+        shortDescription: 'A full-stack EdTech hub that unifies language-learning apps through shared data models, centralized APIs, and cross-app session bridging.',
+        fullDescription: `CORTEX HUB is the central layer of a multi-app language-learning ecosystem, connecting specialized products such as Lexica, Oratio, Solilo, and Synapse under a single technical architecture. The platform is built as a Turborepo monorepo with shared TypeScript contracts via @cortex/types, enabling consistent data exchange across apps.
+
+The system combines a Next.js hub/landing experience with a NestJS core API for centralized processing, real-time communication, and AI-ready analytics workflows. It is designed to integrate Supabase/PostgreSQL for durable storage, Redis + BullMQ for background jobs, and Socket.io for live interactions, while preserving app-level autonomy through mapper-based integration.
+
+From a product architecture perspective, the hub is positioned as the orchestration layer for scale, with a data-driven UI model and roadmap that supports growth from a small set of live apps to a larger ecosystem.`,
+        category: 'Full Stack',
+        technologies: [
+            'TypeScript',
+            'Next.js',
+            'NestJS',
+            'Turborepo',
+            'pnpm Workspaces',
+            'Supabase',
+            'PostgreSQL',
+            'Redis',
+            'BullMQ',
+            'Socket.io',
+            'Pino',
+            'Framer Motion'
+        ],
+        featured: true,
+        role: 'To be updated',
+        duration: 'To be updated',
+        team: 'To be updated',
+        liveUrl: 'https://cortexedtech.vercel.app',
+        githubUrl: 'To be updated',
+        challenge: 'Build a scalable ecosystem where multiple focused EdTech apps can share identity, progress, and learning signals without becoming a monolithic super app.',
+        solution: 'Implemented a monorepo-based hub architecture with shared domain types (@cortex/types), mapper-driven app integration, centralized NestJS APIs, and an auth-bridge approach using postMessage for cross-subdomain session interoperability.',
+        features: [
+            {
+                title: 'Shared Type System Across Apps',
+                content: 'Introduced @cortex/types as a single source of truth for user, assessment, progress, and action-log contracts, reducing integration drift across frontend and backend services.'
+            },
+            {
+                title: 'Centralized Core API for Ecosystem Orchestration',
+                content: 'Built a NestJS core service layer to aggregate cross-app learning data and support AI/analytics pipelines with a unified integration surface.'
+            },
+            {
+                title: 'Cross-Subdomain Auth Bridge',
+                content: 'Implemented a secure postMessage-based auth bridge with origin allow-listing to pass session context between hub and satellite apps in multi-domain deployments.'
+            },
+            {
+                title: 'Realtime and Background Processing Foundation',
+                content: 'Designed infrastructure to support Socket.io realtime events and BullMQ + Redis async processing for non-blocking data refinement and heavy tasks.'
+            },
+            {
+                title: 'Data-Driven Ecosystem Interface',
+                content: 'Structured the hub frontend around typed data models and modular sections (arsenal, incubator, roadmap, partnership) to scale feature presentation as the ecosystem grows.'
+            }
+        ],
+        outcome: 'Established a production-oriented foundation spanning 5 frontend apps and 1 core backend in one monorepo, with documented scaling targets from 4 to 20+ apps and a completed 7-section hub interface implementation in current project artifacts.',
+        order: 8
+    },
+    {
+        _type: 'project',
+        _id: 'lexica',
+        title: 'Lexica',
+        slug: {
+            _type: 'slug',
+            current: 'lexica-ielts-vocabulary-pwa'
+        },
+        shortDescription: 'A mobile-first vocabulary learning PWA that combines swipe-based practice, voice recognition, ELO adaptation, and SRS progression for IELTS learners.',
+        fullDescription: `Lexica is a focused vocabulary product in the CORTEX ecosystem, designed as a high-frequency micro-learning app with Tinder-style interactions and a strong mobile-first UX. It is implemented with Next.js App Router, React, TypeScript, Tailwind CSS, and Framer Motion, with persistent client state managed by Zustand.
+
+The learning engine combines ELO-based deck routing, spaced repetition progress states, and an energy system that controls session intensity. For advanced cards, Lexica introduces a voice-driven mastery flow using the Web Speech API (including webkitSpeechRecognition fallback), turning pronunciation into an active learning checkpoint instead of a passive review step.
+
+Lexica also includes story unlock mechanics and CORTEX sync hooks to push learned vocabulary events to the central API, making it a practical acquisition layer that feeds downstream speaking and analytics experiences across the broader platform.`,
+        category: 'Frontend',
+        technologies: [
+            'Next.js',
+            'React',
+            'TypeScript',
+            'Tailwind CSS',
+            'Framer Motion',
+            'Zustand',
+            'Web Speech API',
+            'Progressive Web App (PWA)',
+            'next-pwa',
+            'Recharts',
+            '@use-gesture/react',
+            'Vercel'
+        ],
+        featured: true,
+        role: 'To be updated',
+        duration: 'To be updated',
+        team: 'To be updated',
+        liveUrl: 'https://cortex-lexica.vercel.app',
+        githubUrl: 'To be updated',
+        challenge: 'Deliver a fast, engaging vocabulary trainer that avoids passive memorization while still supporting adaptive difficulty, pronunciation practice, and long-term retention on mobile devices.',
+        solution: 'Built a PWA-first architecture with animated swipe interactions, ELO-based difficulty routing, SRS card progression, and a voice-first mastery mechanic, then connected learning events to CORTEX via structured sync actions.',
+        features: [
+            {
+                title: 'Adaptive ELO Deck Routing',
+                content: 'Dynamically adjusts card difficulty from user performance signals, helping maintain flow while reducing frustration and stagnation.'
+            },
+            {
+                title: 'Voice-Driven Mastery Flow',
+                content: 'Uses Web Speech API with browser fallback to require repeated correct pronunciation on high-value cards before progression.'
+            },
+            {
+                title: 'Spaced Repetition State Machine',
+                content: 'Tracks per-card learning states and review schedules to move users from first exposure to durable mastery.'
+            },
+            {
+                title: 'Energy and Streak Mechanics',
+                content: 'Implements daily energy limits, midnight reset logic, streak tracking, and highest-ELO progression to reinforce consistent practice behavior.'
+            },
+            {
+                title: 'Story Unlock and Funnel Integration',
+                content: 'Unlocks contextual stories after vocabulary milestones and links practice outcomes into the broader CORTEX learning journey.'
+            },
+            {
+                title: 'CORTEX Sync and Security Hardening',
+                content: 'Provides bulk vocabulary sync to the core API and applies deployment headers such as CSP, frame restrictions, and microphone permissions policy.'
+            }
+        ],
+        outcome: 'Core roadmap phases for gameplay, voice interaction, progression logic, and production hardening are marked complete in project artifacts; deployment and cross-browser/device validation are still pending.',
+        order: 9
+    },
 ];
 
 async function importProjects() {
@@ -683,7 +836,9 @@ async function importProjects() {
                 ...(refs.gallery && refs.gallery.length > 0 && { gallery: refs.gallery }),
             };
 
-            const result = await client.createOrReplace(projectWithImages);
+            const result = await retryWithBackoff(async () => {
+                return await client.createOrReplace(projectWithImages);
+            });
 
             console.log(`✅ Successfully imported: ${project.title}`);
             console.log(`   ID: ${result._id}`);
